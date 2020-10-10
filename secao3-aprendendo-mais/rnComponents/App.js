@@ -1,28 +1,44 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, FlatList} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
+
+import {Picker} from '@react-native-community/picker';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      feed: [
-        {id: '1', nome: 'Saron', idade: 32, email: 'saron@teste.com'},
-        {id: '2', nome: 'Joao', idade: 22, email: 'Joao@teste.com'},
-        {id: '3', nome: 'Maria', idade: 12, email: 'Maria@teste.com'},
-        {id: '4', nome: 'Felipe', idade: 25, email: 'Felipe@teste.com'},
-        {id: '5', nome: 'Fernanda', idade: 25, email: 'Fernanda@teste.com'},
+      pizza: 0,
+      dadosPizza: [
+        {key: 1, nome: 'Calabresa', valor: 35.0},
+        {key: 2, nome: 'Portuguesa', valor: 32.0},
+        {key: 3, nome: '5 Queijos', valor: 40.0},
+        {key: 4, nome: 'Strogonoff', valor: 45.0},
       ],
     };
   }
   render() {
+    let dadosPizza = this.state.dadosPizza.map((value, key) => {
+      return <Picker.Item key={key} value={key} label={value.nome} />;
+    });
+
     return (
       <View style={styles.container}>
-        <FlatList
-          data={this.state.feed}
-          renderItem={({item}) => (
-            <Pessoa data={item} keyExtrator={(feedId) => feedId.id} />
-          )}
-        />
+        <Text style={styles.logo}>Menu Pizza</Text>
+
+        <Picker
+          selectedValue={this.state.pizza}
+          onValueChange={(itemValue, itemIndex) =>
+            this.setState({pizza: itemValue})
+          }>
+          {dadosPizza}
+        </Picker>
+
+        <Text style={styles.pizzas}>
+          Você escolheu: {this.state.dadosPizza[this.state.pizza].nome}
+        </Text>
+        <Text style={styles.pizzas}>
+          R$: {this.state.dadosPizza[this.state.pizza].valor.toFixed(2)}
+        </Text>
       </View>
     );
   }
@@ -31,29 +47,18 @@ class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 20,
   },
-  textoPessoa: {
+  logo: {
+    textAlign: 'center',
+    fontSize: 28,
+    fontWeight: 'bold',
+  },
+  pizzas: {
+    marginTop: 15,
     fontSize: 25,
-  },
-  areaPessoa: {
-    height: 200,
-    margin: 20,
-    backgroundColor: '#ccc',
-    padding: 10,
-    borderRadius: 10,
+    textAlign: 'center',
   },
 });
 
 export default App;
-
-class Pessoa extends Component {
-  render() {
-    return (
-      <View style={styles.areaPessoa}>
-        <Text style={styles.textoPessoa}>Nome: {this.props.data.nome} </Text>
-        <Text style={styles.textoPessoa}>Idade: {this.props.data.idade} </Text>
-        <Text style={styles.textoPessoa}>Email: {this.props.data.email} </Text>
-      </View>
-    );
-  }
-}
