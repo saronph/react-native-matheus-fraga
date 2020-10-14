@@ -1,44 +1,94 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
 
-import {Picker} from '@react-native-community/picker';
+import Logo from './src/img/logo.png';
+import Send from './src/img/send.png';
+import Lista from './src/components/Lista';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pizza: 0,
-      dadosPizza: [
-        {key: 1, nome: 'Calabresa', valor: 35.0},
-        {key: 2, nome: 'Portuguesa', valor: 32.0},
-        {key: 3, nome: '5 Queijos', valor: 40.0},
-        {key: 4, nome: 'Strogonoff', valor: 45.0},
+      feed: [
+        {
+          id: '1',
+          nome: 'Lucas Silva',
+          descricao: 'Mais um dia de muitos bugs :)',
+          imgperfil:
+            'https://sujeitoprogramador.com/instareact/fotoPerfil1.png',
+          imgPublicacao: 'https://sujeitoprogramador.com/instareact/foto1.png',
+          likeada: false,
+          likers: 0,
+        },
+        {
+          id: '2',
+          nome: 'Matheus',
+          descricao: 'Isso sim é ser raiz!!!!!',
+          imgperfil:
+            'https://sujeitoprogramador.com/instareact/fotoPerfil2.png',
+          imgPublicacao: 'https://sujeitoprogramador.com/instareact/foto2.png',
+          likeada: false,
+          likers: 0,
+        },
+        {
+          id: '3',
+          nome: 'Jose Augusto',
+          descricao: 'Bora trabalhar Haha',
+          imgperfil:
+            'https://sujeitoprogramador.com/instareact/fotoPerfil3.png',
+          imgPublicacao: 'https://sujeitoprogramador.com/instareact/foto3.png',
+          likeada: false,
+          likers: 3,
+        },
+        {
+          id: '4',
+          nome: 'Gustavo Henrique',
+          descricao: 'Isso sim que é TI!',
+          imgperfil:
+            'https://sujeitoprogramador.com/instareact/fotoPerfil1.png',
+          imgPublicacao: 'https://sujeitoprogramador.com/instareact/foto4.png',
+          likeada: false,
+          likers: 1,
+        },
+        {
+          id: '5',
+          nome: 'Guilherme',
+          descricao: 'Boa tarde galera do insta...',
+          imgperfil:
+            'https://sujeitoprogramador.com/instareact/fotoPerfil2.png',
+          imgPublicacao: 'https://sujeitoprogramador.com/instareact/foto5.png',
+          likeada: false,
+          likers: 32,
+        },
       ],
     };
   }
   render() {
-    let dadosPizza = this.state.dadosPizza.map((value, key) => {
-      return <Picker.Item key={key} value={key} label={value.nome} />;
-    });
-
     return (
       <View style={styles.container}>
-        <Text style={styles.logo}>Menu Pizza</Text>
+        <View style={styles.header}>
+          <TouchableOpacity>
+            <Image source={Logo} style={styles.logo} />
+          </TouchableOpacity>
 
-        <Picker
-          selectedValue={this.state.pizza}
-          onValueChange={(itemValue, itemIndex) =>
-            this.setState({pizza: itemValue})
-          }>
-          {dadosPizza}
-        </Picker>
+          <TouchableOpacity>
+            <Image source={Send} style={styles.send} />
+          </TouchableOpacity>
+        </View>
 
-        <Text style={styles.pizzas}>
-          Você escolheu: {this.state.dadosPizza[this.state.pizza].nome}
-        </Text>
-        <Text style={styles.pizzas}>
-          R$: {this.state.dadosPizza[this.state.pizza].valor.toFixed(2)}
-        </Text>
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item) => item.id}
+          data={this.state.feed}
+          renderItem={({item}) => <Lista data={item} />}
+        />
       </View>
     );
   }
@@ -47,17 +97,22 @@ class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 20,
   },
-  logo: {
-    textAlign: 'center',
-    fontSize: 28,
-    fontWeight: 'bold',
+  header: {
+    height: 55,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 7,
+
+    borderBottomWidth: 0.2,
+    shadowColor: '#000',
+    elevation: 1,
   },
-  pizzas: {
-    marginTop: 15,
-    fontSize: 25,
-    textAlign: 'center',
+  send: {
+    width: 23,
+    height: 23,
   },
 });
 
