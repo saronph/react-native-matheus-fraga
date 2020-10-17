@@ -5,7 +5,10 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native';
+
+import api from '../../services/api';
 
 class Conversor extends Component {
   constructor(props) {
@@ -20,7 +23,21 @@ class Conversor extends Component {
     this.converter = this.converter.bind(this);
   }
 
-  converter() {}
+  async converter() {
+    let de_para = this.state.moedaA + '_' + this.state.moedaB;
+    const response = await api.get(
+      `convert?q=${de_para}&compact=ultra&apiKey=7c5ef455b88d735bc6ad`,
+    );
+    let cotacao = response.data[de_para];
+
+    let resultado = cotacao * parseFloat(this.state.moedaB_valor);
+
+    this.setState({
+      valorConvertido: resultado.toFixed(2),
+    });
+
+    Keyboard.dismiss();
+  }
 
   render() {
     const {moedaA, moedaB} = this.props;
@@ -44,7 +61,9 @@ class Conversor extends Component {
           <Text style={styles.textoBotao}>Converter</Text>
         </TouchableOpacity>
 
-        <Text style={styles.valorConvertido}>{this.state.valorConvertido}</Text>
+        <Text style={styles.valorConvertido}>
+          {this.state.valorConvertido === 0 ? '' : this.state.valorConvertido}
+        </Text>
       </View>
     );
   }
