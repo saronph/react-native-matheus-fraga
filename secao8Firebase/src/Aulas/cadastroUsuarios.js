@@ -3,38 +3,38 @@ import {View, Text, StyleSheet, TextInput, Button} from 'react-native';
 import firebase from './src/firebaseConnection';
 
 const App = () => {
-  const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // Ativar login por email no firebase
 
   async function cadastrar() {
     await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((value) => {
-        firebase.database().ref('usuarios').child(value.user.uid).set({
-          nome: nome,
-        });
-        alert('Usuário cadastrado com sucesso!');
+        alert('Usuário criado: ' + value.user.email);
       })
       .catch((error) => {
-        alert('Algo deu errado');
+        if (error.code === 'auth/weak-password') {
+          alert('Sua senha deve ter no mín 6 caracteres');
+          return;
+        }
+        if (error.code === 'auth/invalid-email') {
+          alert('Insira um email válido');
+          return;
+        } else {
+          alert('Ocorreu um erro no cadastro');
+          return;
+        }
       });
-    setNome('');
+
     setEmail('');
     setPassword('');
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.texto}>Insira seu nome</Text>
-      <TextInput
-        style={styles.input}
-        underlineColorAndroid="transparent"
-        onChangeText={(texto) => setNome(texto)}
-        value={nome}
-      />
-
       <Text style={styles.texto}>Insira seu email</Text>
       <TextInput
         style={styles.input}

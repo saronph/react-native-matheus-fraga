@@ -3,38 +3,35 @@ import {View, Text, StyleSheet, TextInput, Button} from 'react-native';
 import firebase from './src/firebaseConnection';
 
 const App = () => {
-  const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [user, setUser] = useState('');
 
-  async function cadastrar() {
+  async function logar() {
     await firebase
       .auth()
-      .createUserWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(email, password)
       .then((value) => {
-        firebase.database().ref('usuarios').child(value.user.uid).set({
-          nome: nome,
-        });
-        alert('Usuário cadastrado com sucesso!');
+        alert('Seja bem vindo: ' + value.user.email);
+        setUser(value.user.email);
       })
       .catch((error) => {
-        alert('Algo deu errado');
+        alert('Ocorreu um erro no login');
+        return;
       });
-    setNome('');
+
     setEmail('');
     setPassword('');
   }
 
+  async function logout() {
+    await firebase.auth().signOut();
+    alert('Deslogado');
+    setUser('');
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.texto}>Insira seu nome</Text>
-      <TextInput
-        style={styles.input}
-        underlineColorAndroid="transparent"
-        onChangeText={(texto) => setNome(texto)}
-        value={nome}
-      />
-
       <Text style={styles.texto}>Insira seu email</Text>
       <TextInput
         style={styles.input}
@@ -51,7 +48,11 @@ const App = () => {
         value={password}
       />
 
-      <Button title="Cadastrar" onPress={cadastrar} />
+      <Button title="Logar" onPress={logar} />
+
+      <Text>{user}</Text>
+
+      {user !== '' && <Button title="Deslogar" onPress={logout} />}
     </View>
   );
 };

@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/database';
+import 'firebase/auth';
 
 //configs pegas no site clicar no projeto e engrenagem, projeto feito na opção web
 let firebaseConfig = {
