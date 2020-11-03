@@ -1,7 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-
 import {AuthContext} from '../../contexts/auth';
 
 import {
@@ -23,10 +22,10 @@ const SignIn = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const {user} = useContext(AuthContext);
+  const {signIn} = useContext(AuthContext);
 
   function handleLogin() {
-    console.log(user);
+    signIn(email, password);
   }
 
   return (
