@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {Platform} from 'react-native';
+import {Platform, ActivityIndicator} from 'react-native';
 
 import {AuthContext} from '../../contexts/auth';
 
@@ -17,7 +17,7 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const {signUp} = useContext(AuthContext);
+  const {signUp, loadingAuth} = useContext(AuthContext);
 
   function handleSignUp() {
     signUp(name, email, password);
@@ -53,11 +53,12 @@ const SignUp = () => {
             autoCapitalize="none"
             value={password}
             onChangeText={(text) => setPassword(text)}
+            secureTextEntry={true}
           />
         </AreaInput>
 
         <SubmitButton onPress={handleSignUp}>
-          <SubmitText>Cadastrar</SubmitText>
+        { loadingAuth ? (<ActivityIndicator size={20} color="#ffffff" />) : <SubmitText>Cadastrar</SubmitText>}
         </SubmitButton>
       </Container>
     </Background>
