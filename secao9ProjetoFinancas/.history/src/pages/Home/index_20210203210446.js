@@ -4,17 +4,13 @@ import {AuthContext} from '../../contexts/auth';
 import Header from '../../components/Header';
 import Historico from '../../components/Historico';
 import {format, isBefore} from 'date-fns';
-import {Alert, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import {Background, Container, Nome, Saldo, Title, List, Area} from './styles';
+import {Background, Container, Nome, Saldo, Title, List} from './styles';
+import {Alert} from 'react-native';
 
 const Home = () => {
-  // 10:40
   const [historico, setHistorico] = useState([]);
   const [saldo, setSaldo] = useState(0);
-  const [newDate, setNewDate] = useState(new Date());
-  const [show, setShow] = useState(false);
 
   const {user} = useContext(AuthContext);
   const uid = user && user.uid;
@@ -34,7 +30,7 @@ const Home = () => {
         .ref('historico')
         .child(uid)
         .orderByChild('date')
-        .equalTo(format(newDate, 'dd/MM/yyyy'))
+        .equalTo(format(new Date(), 'dd/MM/yyyy'))
         .limitToLast(10)
         .on('value', (snapshot) => {
           setHistorico([]);
@@ -58,9 +54,12 @@ const Home = () => {
     const [diaItem, mesItem, anoItem] = data.date.split('/');
     const dateItem = new Date(`${anoItem}/${mesItem}/${diaItem}`);
 
+    console.log(dateItem);
+
     const formatDiaHoje = format(new Date(), 'dd/MM/yyyy');
     const [diaHoje, mesHoje, anoHoje] = formatDiaHoje.split('/');
     const dateHoje = new Date(`${anoHoje}/${mesHoje}/${diaHoje}`);
+    console.log(dateHoje);
 
     if (isBefore(dateItem, dateHoje)) {
       alert('Você não pode excluir um registro antigo');
@@ -107,8 +106,6 @@ const Home = () => {
       });
   }
 
-  function handleShowPicker() {}
-
   return (
     <Background>
       <Header />
@@ -119,12 +116,7 @@ const Home = () => {
         </Saldo>
       </Container>
 
-      <Area>
-        <TouchableOpacity onPress={handleShowPicker}>
-          <Icon name="event" color="#ffffff" size={30} />
-        </TouchableOpacity>
-        <Title>Ultimas movimentações</Title>
-      </Area>
+      <Title>Ultimas movimentações</Title>
 
       <List
         showsVerticalScrollIndicator={false}

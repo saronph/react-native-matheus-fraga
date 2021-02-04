@@ -4,9 +4,9 @@ import Icon from 'react-native-vector-icons/Feather';
 
 import {Container, Tipo, IconView, TipoText, ValorText} from './styles';
 
-const Historico = ({data, deleteItem}) => {
+const Historico = ({data}) => {
   return (
-    <TouchableWithoutFeedback onLongPress={() => deleteItem(data)}>
+    <TouchableWithoutFeedback>
       <Container>
         <Tipo>
           <IconView tipo={data.tipo}>

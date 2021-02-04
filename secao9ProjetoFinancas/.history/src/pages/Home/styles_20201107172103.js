@@ -10,12 +10,6 @@ export const Container = styled.View`
   margin-bottom: 25px;
 `;
 
-export const Area = styled.View`
-  flex-direction: row;
-  margin-left: 15px;
-  align-items: baseline;
-`;
-
 export const Nome = styled.Text`
   font-size: 18px;
   color: #ffffff;
@@ -30,7 +24,7 @@ export const Saldo = styled.Text`
 `;
 
 export const Title = styled.Text`
-  margin-left: 5px;
+  margin-left: 15px;
   color: #00b94a;
   margin-bottom: 10px;
 `;

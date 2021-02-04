@@ -13,7 +13,7 @@ export const Container = styled.View`
 export const Area = styled.View`
   flex-direction: row;
   margin-left: 15px;
-  align-items: baseline;
+  padding-bottom: 5px;
 `;
 
 export const Nome = styled.Text`

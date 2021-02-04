@@ -1,10 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {
-  SafeAreaView,
-  Keyboard,
-  TouchableWithoutFeedback,
-  Alert,
-} from 'react-native';
+import {SafeAreaView, Keyboard, TouchableWithoutFeedback, Alert} from 'react-native';
 import {format} from 'date-fns';
 import {useNavigation} from '@react-navigation/native';
 import firebase from '../../services/firebaseConnection';
@@ -22,10 +17,10 @@ const New = () => {
   const [tipo, setTipo] = useState('receita');
   const {user: usuario} = useContext(AuthContext);
 
-  function handleSubmit() {
+  function handleSubmit(){
     Keyboard.dismiss();
-    if (isNaN(parseFloat(valor)) || tipo === null) {
-      alert('Preencha todos os campos');
+    if(isNaN(parseFloat(valor)) || tipo === null){
+      alert('Preencha todos os campos')
       return;
     }
 
@@ -35,46 +30,37 @@ const New = () => {
       [
         {
           text: 'Cancelar',
-          style: 'cancel',
+          style: 'cancel'
         },
         {
           text: 'Continuar',
-          onPress: () => handleAdd(),
-        },
-      ],
-    );
+          onPress: () => handleAdd()
+        }
+      ]
+    )
   }
 
-  async function handleAdd() {
+  async function handleAdd(){
     let uid = usuario.uid;
 
-    let key = await (
-      await firebase.database().ref('historico').child(uid).push()
-    ).key;
-    await firebase
-      .database()
-      .ref('historico')
-      .child(uid)
-      .child(key)
-      .set({
-        tipo: tipo,
-        valor: parseFloat(valor),
-        date: format(new Date(), 'dd/MM/yyyy'),
-      });
+    let key = await (await firebase.database().ref('historico').child(uid).push()).key;
+    await firebase.database().ref('historico').child(uid).child(key).set({
+      tipo: tipo,
+      valor: parseFloat(valor),
+      date: format(new Date(), 'dd/MM/yy')
+    })
 
     let user = firebase.database().ref('users').child(uid);
     await user.once('value').then((snapshot) => {
       let saldo = parseFloat(snapshot.val().saldo);
 
-      tipo === 'despesa'
-        ? (saldo -= parseFloat(valor))
-        : (saldo += parseFloat(valor));
+      tipo === 'despesa' ? saldo -= parseFloat(valor) : saldo += parseFloat(valor);
 
       user.child('saldo').set(saldo);
-    });
+    })
     Keyboard.dismiss();
     setValor('');
-    navigation.navigate('Home');
+    navigation.navigate('Home')
   }
 
   return (
@@ -91,7 +77,10 @@ const New = () => {
             onChangeText={(text) => setValor(text)}
           />
 
-          <Picker onChange={setTipo} tipo={tipo} />
+          <Picker 
+            onChange={setTipo}
+            tipo={tipo}
+          />
 
           <SubmitButton onPress={handleSubmit}>
             <SubmitText>Inserir</SubmitText>

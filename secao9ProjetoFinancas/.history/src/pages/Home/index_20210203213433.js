@@ -10,11 +10,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Background, Container, Nome, Saldo, Title, List, Area} from './styles';
 
 const Home = () => {
-  // 10:40
   const [historico, setHistorico] = useState([]);
   const [saldo, setSaldo] = useState(0);
   const [newDate, setNewDate] = useState(new Date());
-  const [show, setShow] = useState(false);
 
   const {user} = useContext(AuthContext);
   const uid = user && user.uid;
@@ -107,8 +105,6 @@ const Home = () => {
       });
   }
 
-  function handleShowPicker() {}
-
   return (
     <Background>
       <Header />
@@ -120,7 +116,7 @@ const Home = () => {
       </Container>
 
       <Area>
-        <TouchableOpacity onPress={handleShowPicker}>
+        <TouchableOpacity>
           <Icon name="event" color="#ffffff" size={30} />
         </TouchableOpacity>
         <Title>Ultimas movimentações</Title>
