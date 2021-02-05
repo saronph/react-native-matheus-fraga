@@ -4,13 +4,12 @@ import {AuthContext} from '../../contexts/auth';
 import Header from '../../components/Header';
 import Historico from '../../components/Historico';
 import {format, isBefore} from 'date-fns';
-import {Alert, Platform, TouchableOpacity} from 'react-native';
+import {Alert, TouchableOpacity} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DatePicker from '../../components/DatePicker';
 
 import {Background, Container, Nome, Saldo, Title, List, Area} from './styles';
-import {onChange} from 'react-native-reanimated';
 
 const Home = () => {
   // 10:40
@@ -55,7 +54,7 @@ const Home = () => {
         });
     }
     loadList();
-  }, [newDate]);
+  }, []);
 
   function handleDelete(data) {
     const [diaItem, mesItem, anoItem] = data.date.split('/');
@@ -114,16 +113,6 @@ const Home = () => {
     setShow(true);
   }
 
-  function handleClose() {
-    setShow(false);
-  }
-
-  const onChange = (date) => {
-    setShow(Platform.OS === 'ios');
-    setNewDate(date);
-    console.log(date);
-  };
-
   return (
     <Background>
       <Header />
@@ -150,9 +139,7 @@ const Home = () => {
         )}
       />
 
-      {show && (
-        <DatePicker onClose={handleClose} date={newDate} onChange={onChange} />
-      )}
+      {show && <DatePicker />}
     </Background>
   );
 };

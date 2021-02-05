@@ -1,31 +1,32 @@
 import React, {useState} from 'react';
-import {Text, Platform} from 'react-native';
+import {View, Text, Platform} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import {Container, Header} from './styles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-export default function DatePicker({date, onClose, onChange}) {
-  const [dateNow, setDateNow] = useState(new Date(date));
+export default function DatePicker() {
+  const [dateNow, setDateNow] = useState(new Date());
 
+  function Alert() {
+    alert(dateNow);
+  }
   return (
     <Container>
       {Platform.OS === 'ios' && (
         <Header>
-          <TouchableOpacity onPress={onClose}>
+          <TouchableOpacity onPress={() => {}}>
             <Text>Fechar</Text>
           </TouchableOpacity>
         </Header>
       )}
       <DateTimePicker
-        value={dateNow}
+        value={Alert}
         mode="date"
         display="default"
-        onChange={(event, date) => {
-          const currentDate = date || dateNow;
-          setDateNow(currentDate);
-          onChange(currentDate);
-        }}
+        // onChange={(event, date) => {
+
+        // }}
         style={{backgroundColor: 'white'}}
       />
     </Container>

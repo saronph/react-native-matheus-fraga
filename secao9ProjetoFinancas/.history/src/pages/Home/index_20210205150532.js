@@ -4,7 +4,7 @@ import {AuthContext} from '../../contexts/auth';
 import Header from '../../components/Header';
 import Historico from '../../components/Historico';
 import {format, isBefore} from 'date-fns';
-import {Alert, Platform, TouchableOpacity} from 'react-native';
+import {Alert, TouchableOpacity} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DatePicker from '../../components/DatePicker';
@@ -55,7 +55,7 @@ const Home = () => {
         });
     }
     loadList();
-  }, [newDate]);
+  }, []);
 
   function handleDelete(data) {
     const [diaItem, mesItem, anoItem] = data.date.split('/');
@@ -118,11 +118,7 @@ const Home = () => {
     setShow(false);
   }
 
-  const onChange = (date) => {
-    setShow(Platform.OS === 'ios');
-    setNewDate(date);
-    console.log(date);
-  };
+  const onChange = () => {};
 
   return (
     <Background>

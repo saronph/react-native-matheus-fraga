@@ -55,7 +55,7 @@ const Home = () => {
         });
     }
     loadList();
-  }, [newDate]);
+  }, []);
 
   function handleDelete(data) {
     const [diaItem, mesItem, anoItem] = data.date.split('/');
